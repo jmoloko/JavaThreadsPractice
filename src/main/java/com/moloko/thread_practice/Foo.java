@@ -4,8 +4,8 @@ package main.java.com.moloko.thread_practice;
  * @author Jack Milk
  */
 public class Foo {
-    boolean checkFirst = false;
-    boolean checkSecond = false;
+    private volatile boolean checkFirst = false;
+    private volatile boolean checkSecond = false;
 
     public void first() {
         synchronized (this) {
