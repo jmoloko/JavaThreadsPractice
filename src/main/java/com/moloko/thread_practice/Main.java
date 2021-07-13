@@ -1,21 +1,22 @@
 package main.java.com.moloko.thread_practice;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * @author Jack Milk
  */
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         Foo foo = new Foo();
-        Thread t3 = new Thread(foo::third);
-        Thread t2 = new Thread(foo::second);
-        Thread t1 = new Thread(foo::first);
+        LockConditionFoo lockFoo = new LockConditionFoo();
 
-        t3.start();
-        t2.start();
-        t1.start();
+        ExecutorService exec = Executors.newFixedThreadPool(3);
+        exec.submit(lockFoo::first);
+        exec.submit(lockFoo::second);
+        exec.submit(lockFoo::third);
 
-        t3.join();
-        t2.join();
-        t1.join();
+        exec.shutdown();
+
     }
 }
