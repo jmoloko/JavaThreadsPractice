@@ -1,5 +1,9 @@
 package main.java.com.moloko.thread_practice;
 
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * @author Jack Milk
  */
@@ -7,40 +11,33 @@ public class Foo {
     private volatile boolean checkFirst = false;
     private volatile boolean checkSecond = false;
 
-    public void first() {
-        synchronized (this) {
-            System.out.print("First");
-            checkFirst = true;
-            notifyAll();
-        }
+    public synchronized void first() {
+        System.out.print("First");
+        checkFirst = true;
+        notifyAll();
     }
 
-    public void second() {
-        synchronized (this) {
-            while (!checkFirst) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+    public synchronized void second() {
+        while (!checkFirst) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            System.out.print("Second");
-            checkSecond = true;
-            notify();
         }
-
+        System.out.print("Second");
+        checkSecond = true;
+        notify();
     }
 
-    public void third() {
-        synchronized (this) {
-            while (!checkSecond) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+    public synchronized void third() {
+        while (!checkSecond) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            System.out.print("Third");
         }
+        System.out.print("Third");
     }
 }

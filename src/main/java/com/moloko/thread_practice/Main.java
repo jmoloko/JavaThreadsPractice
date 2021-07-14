@@ -9,14 +9,16 @@ import java.util.concurrent.Executors;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         Foo foo = new Foo();
-        LockConditionFoo lockFoo = new LockConditionFoo();
+        Thread t1 = new Thread(foo::third);
+        Thread t2 = new Thread(foo::second);
+        Thread t3 = new Thread(foo::first);
 
-        ExecutorService exec = Executors.newFixedThreadPool(3);
-        exec.submit(lockFoo::first);
-        exec.submit(lockFoo::second);
-        exec.submit(lockFoo::third);
+        t1.start();
+        t2.start();
+        t3.start();
 
-        exec.shutdown();
-
+        t1.join();
+        t2.join();
+        t3.join();
     }
 }
