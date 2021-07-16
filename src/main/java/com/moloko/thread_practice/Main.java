@@ -7,9 +7,10 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         Foo foo = new Foo();
         FooLockCondition fl = new FooLockCondition();
-        Thread t1 = new Thread(fl::third);
-        Thread t2 = new Thread(fl::second);
-        Thread t3 = new Thread(fl::first);
+        FooCountDownLatch fcd = new FooCountDownLatch();
+        Thread t1 = new Thread(fcd::third);
+        Thread t2 = new Thread(fcd::second);
+        Thread t3 = new Thread(fcd::first);
 
         t1.start();
         t2.start();
